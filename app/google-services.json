@@ -1,0 +1,107 @@
+{
+  "project_info": {
+    "project_number": "1096443033376",
+    "firebase_url": "https://openairmuseumwalks.firebaseio.com",
+    "project_id": "openairmuseumwalks",
+    "storage_bucket": "openairmuseumwalks.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1096443033376:android:c0fa4071506a96ddfb4945",
+        "android_client_info": {
+          "package_name": "com.example.romanwalkmuseumedition"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1096443033376-j0dg0bcbp549qa7ivgvkr7nl8k1bj23p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.romanwalkmuseumedition",
+            "certificate_hash": "9f9b44dc37b71c689ec14f98fee3ab636afc320d"
+          }
+        },
+        {
+          "client_id": "1096443033376-91pfimg0vu174rmndvjsmui2pcenb8vf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_8f2ZnB8ET4n21wgZyWfuXv6dm09zc-g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1096443033376-91pfimg0vu174rmndvjsmui2pcenb8vf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1096443033376-cbsgdib61phjdam5qcak1so08v5prjbp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.somogyibalazs.RomanWalk"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1096443033376:android:bba2fe563388495afb4945",
+        "android_client_info": {
+          "package_name": "hu.bme.aut.romanwalk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1096443033376-rv8emulvr51egpfoqb0vjav93f25l691.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hu.bme.aut.romanwalk",
+            "certificate_hash": "5302b516461781cb3fb776584be0f09024a67864"
+          }
+        },
+        {
+          "client_id": "1096443033376-mngka3a0u2181aqlqfs3iu7s918uq61c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hu.bme.aut.romanwalk",
+            "certificate_hash": "9c61deb106b3c274dbbf8fef22ffc038a4c825a4"
+          }
+        },
+        {
+          "client_id": "1096443033376-91pfimg0vu174rmndvjsmui2pcenb8vf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_8f2ZnB8ET4n21wgZyWfuXv6dm09zc-g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1096443033376-91pfimg0vu174rmndvjsmui2pcenb8vf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1096443033376-cbsgdib61phjdam5qcak1so08v5prjbp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.somogyibalazs.RomanWalk"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
