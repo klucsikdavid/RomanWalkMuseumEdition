@@ -3,6 +3,7 @@ package com.example.romanwalkmuseumedition
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -11,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.romanwalkmuseumedition.model.Code
 import com.example.romanwalkmuseumedition.service.FirebaseService
+import com.google.gson.Gson
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.discount_details.view.*
@@ -31,7 +33,6 @@ class QRScannerActivity: AppCompatActivity() {
         scan_qr_button.setOnClickListener {
             qrScannerHandler()
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -59,16 +60,17 @@ class QRScannerActivity: AppCompatActivity() {
     }
 
     private fun handleDiscount() {
-        getDataFromQRCodeContent()
-        downloadFirebaseCodes()
-    }
-
-    private fun getDataFromQRCodeContent() {
         var listOfData = qrCodeContent.split(";")
-        museumID = listOfData[0]
-        projectID = listOfData[1]
-        gameID = listOfData[2]
-        percentage = listOfData[3].toLong()
+        if (listOfData.size != 4) {
+            showPopupWithMessage("Ezt a QR-kódot nem tudjuk beváltani, mert nem szerepel az adatbázisban!")
+        } else {
+            museumID = listOfData[0]
+            projectID = listOfData[1]
+            gameID = listOfData[2]
+            percentage = listOfData[3].toLong()
+
+            downloadFirebaseCodes()
+        }
     }
 
     private fun downloadFirebaseCodes() {
@@ -79,20 +81,32 @@ class QRScannerActivity: AppCompatActivity() {
     private fun loadCodes(map: HashMap<String, Code>) {
         firestoreCodes = map
         checkScannedCode()
-        redeemGeneratedCode()
     }
 
     private fun checkScannedCode() {
         if (!firestoreCodes.containsKey(gameID)) {
             showPopupWithMessage("Ezt a QR-kódot nem tudjuk beváltani, mert nem szerepel az adatbázisban!")
         } else {
-            showDetailsOfScannedDiscount()
+            if (firestoreCodes.get(gameID)!!.validated != null) {
+                showDetailsOfScannedDiscount("Már beváltottad ezt a kedvezményt!")
+            } else {
+                redeemGeneratedCode()
+            }
         }
     }
 
     private fun redeemGeneratedCode() {
         var firebaseService = FirebaseService(this)
-        firebaseService.redeemDiscount(museumID, projectID, gameID)
+        firebaseService.redeemDiscount(museumID, projectID, gameID) { result ->
+            when (result) {
+                "Success" -> {
+                    showDetailsOfScannedDiscount("Sikeres beváltás!")
+                }
+                "Failure" -> {
+                    Toast.makeText(this, "Hiba a beváltás közben...", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun showPopupWithMessage(message: String) {
@@ -101,13 +115,10 @@ class QRScannerActivity: AppCompatActivity() {
         val mAlertDialog = builder.show()
     }
 
-    private fun showDetailsOfScannedDiscount() {
+    private fun showDetailsOfScannedDiscount(message: String) {
         val popup = LayoutInflater.from(this).inflate(R.layout.discount_details, null)
-        if (firestoreCodes.get(gameID)!!.validated) {
-            popup.isRedeemed_textview.text = "Már beváltottad ezt a kedvezményt!"
-        } else {
-            popup.isRedeemed_textview.text = "Sikeres beváltás!"
-        }
+
+        popup.isRedeemed_textview.text = message
         popup.discount_textview.text = percentage.toString()
         popup.museum_textview.text = museumID
         popup.project_textview.text = projectID

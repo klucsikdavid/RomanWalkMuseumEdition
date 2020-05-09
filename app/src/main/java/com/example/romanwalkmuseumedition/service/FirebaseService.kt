@@ -8,6 +8,7 @@ import com.example.romanwalkmuseumedition.model.Code
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.SetOptions
 import javax.security.auth.callback.Callback
 
 
@@ -28,13 +29,11 @@ class FirebaseService(appContext: Context) {
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
                         val code = Code(
-                            gameID = document.getString("GameID")!!,
+                            gameID = document.getString("GameID")!!.toLowerCase(),
                             percentage = document.getLong("Percentage")!!,
-                            validated = document.getBoolean("Validated")!!
+                            validated = document.getBoolean("Validated")
                             )
                         codes.put(document.id, code)
-                        Log.d(TAG, document.id + " => " + document.data+ "| **************************")
-                        Log.d(TAG, codes.size.toString()+ "**********service****************")
                     }
                     callback(codes)
                 } else {
@@ -46,13 +45,22 @@ class FirebaseService(appContext: Context) {
             }
     }
 
-    fun redeemDiscount(museumID: String, projectID: String, gameID: String) {
+    fun redeemDiscount(museumID: String, projectID: String, gameID: String, callback: (String) -> Unit) {
+        val item = HashMap<String, Any>()
+        item.put("Validated", true)
+
         var specificCodeReference = firestoreDB.collection("Organisation")
             .document(museumID)
             .collection("Project")
             .document(projectID)
             .collection("Code")
             .document(gameID)
-        specificCodeReference.update("Validated", true)
+        specificCodeReference.set(item, SetOptions.merge())
+            .addOnSuccessListener {
+                callback("Success")
+            }
+            .addOnFailureListener {
+                callback("Failure")
+            }
     }
 }
